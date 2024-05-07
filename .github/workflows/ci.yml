@@ -37,8 +37,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Update action.yml
         run: |
@@ -160,8 +158,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Generate test cases matrix
         id: generate-matrix
         run: |
@@ -195,8 +191,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Download ${{ env.CONTAINER_IMAGE_OUTPUT_IMAGE_NAME }} container image
         uses: actions/download-artifact@v4.1.7
@@ -223,8 +217,6 @@ jobs:
         contents: read
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup authentication token
         run: |
