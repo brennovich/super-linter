@@ -14,13 +14,18 @@ function GenerateFileDiff() {
   local DIFF_GIT_DEFAULT_BRANCH_CMD
   DIFF_GIT_DEFAULT_BRANCH_CMD="git -C \"${GITHUB_WORKSPACE}\" diff --diff-filter=d --name-only origin/${DEFAULT_BRANCH}...${GITHUB_SHA} | xargs -I % sh -c 'echo \"${GITHUB_WORKSPACE}/%\"' 2>&1"
 
+  echo "===== TEST ====="
+  `echo $DIFF_GIT_DEFAULT_BRANCH_CMD`
+  git show ${GITHUB_SHA}
+  git diff --name-only origin/${DEFAULT_BRANCH}...${{ github.head_ref || github.ref_name }}
+
   if [ "${GITHUB_EVENT_NAME:-}" == "push" ]; then
     local DIFF_TREE_CMD
     if [[ "${GITHUB_SHA}" == "${GIT_ROOT_COMMIT_SHA}" ]]; then
       GITHUB_BEFORE_SHA=""
       debug "Set GITHUB_BEFORE_SHA (${GITHUB_BEFORE_SHA}) to an empty string because there's no commit before the initial commit to diff against."
     fi
-    DIFF_TREE_CMD="git -C \"${GITHUB_WORKSPACE}\" diff-tree --no-commit-id --name-only -r --root ${GITHUB_SHA} ${GITHUB_BEFORE_SHA} | xargs -I % sh -c 'echo \"${GITHUB_WORKSPACE}/%\"' 2>&1"
+    DIFF_TREE_CMD="git -C \"${GITHUB_WORKSPACE}\" diff-tree --no-commit-id --name-only -r --root origin/${GITHUB_SHA} ${GITHUB_BEFORE_SHA} | xargs -I % sh -c 'echo \"${GITHUB_WORKSPACE}/%\"' 2>&1"
     RunFileDiffCommand "${DIFF_TREE_CMD}"
     if [ ${#RAW_FILE_ARRAY[@]} -eq 0 ]; then
       debug "Generating the file array with diff-tree produced [0] items, trying with git diff against the default branch..."
