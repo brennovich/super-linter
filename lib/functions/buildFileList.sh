@@ -16,8 +16,6 @@ function GenerateFileDiff() {
 
   echo "===== TEST ====="
   `echo $DIFF_GIT_DEFAULT_BRANCH_CMD`
-  git show ${GITHUB_SHA}
-  git diff --name-only origin/${DEFAULT_BRANCH}...${{ github.head_ref || github.ref_name }}
 
   if [ "${GITHUB_EVENT_NAME:-}" == "push" ]; then
     local DIFF_TREE_CMD
