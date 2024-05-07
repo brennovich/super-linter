@@ -23,7 +23,7 @@ function GenerateFileDiff() {
     local DIFF_TREE_CMD
     if [[ "${GITHUB_SHA}" == "${GIT_ROOT_COMMIT_SHA}" ]]; then
       GITHUB_BEFORE_SHA=""
-      debug "Set GITHUB_BEFORE_SHA (${GITHUB_BEFORE_SHA}) to an empty string because there's no commit before the initial commit to diff against."
+      debug "Set GITHUB_BEFORE_SHA (${GITHUB_BEFORE_SHA}) to an empty string because there's no commit before the initial commit to diff against."z
     fi
     DIFF_TREE_CMD="git -C \"${GITHUB_WORKSPACE}\" diff-tree --no-commit-id --name-only -r --root origin/${GITHUB_SHA} ${GITHUB_BEFORE_SHA} | xargs -I % sh -c 'echo \"${GITHUB_WORKSPACE}/%\"' 2>&1"
     RunFileDiffCommand "${DIFF_TREE_CMD}"

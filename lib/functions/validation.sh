@@ -200,6 +200,11 @@ function ValidateGitShaReference() {
   debug "Git HEAD: $(git -C "${GITHUB_WORKSPACE}" show HEAD --stat)"
 
   debug "Validate that the GITHUB_SHA reference (${GITHUB_SHA}) exists in this Git repository."
+  
+  echo "==== TEST ===="
+  git show "${GITHUB_SHA}"
+  git diff --name-only origin/${DEFAULT_BRANCH}...origin/${{ github.head_ref || github.ref_name }}
+
   if ! CheckIfGitRefExists "${GITHUB_SHA}"; then
     IssueHintForFullGitHistory
     fatal "The GITHUB_SHA reference (${GITHUB_SHA}) doesn't exist in this Git repository"
